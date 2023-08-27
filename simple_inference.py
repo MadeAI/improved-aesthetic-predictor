@@ -108,5 +108,3 @@ prediction = model(torch.from_numpy(im_emb_arr).to(device).type(torch.cuda.Float
 
 print( "Aesthetic score predicted by the model:")
 print( prediction )
-
-
