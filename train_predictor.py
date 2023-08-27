@@ -27,7 +27,6 @@ class MLP(pl.LightningModule):
             nn.Linear(128, 64),
             
             nn.Dropout(0.1),
-
             nn.Linear(64, 16),
 
             nn.Linear(16, 1)
@@ -96,7 +95,7 @@ epochs = 50
 
 model.train()
 best_loss =999
-save_name = "linear_predictor_L14_MSE.pth"
+save_name = "apv1.pth"
 
 
 for epoch in range(epochs):

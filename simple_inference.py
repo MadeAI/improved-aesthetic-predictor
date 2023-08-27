@@ -7,8 +7,6 @@ import json
 
 from warnings import filterwarnings
 
-
-# os.environ["CUDA_VISIBLE_DEVICES"] = "0"    # choose GPU if you are on a multi GPU server
 import numpy as np
 import torch
 import pytorch_lightning as pl
@@ -28,15 +26,9 @@ import clip
 from PIL import Image, ImageFile
 
 
-#####  This script will predict the aesthetic score for this image file:
-
 img_path = "test.jpg"
 
 
-
-
-
-# if you changed the MLP architecture during training, change it also here:
 class MLP(pl.LightningModule):
     def __init__(self, input_size, xcol='emb', ycol='avg_rating'):
         super().__init__()
@@ -45,17 +37,15 @@ class MLP(pl.LightningModule):
         self.ycol = ycol
         self.layers = nn.Sequential(
             nn.Linear(self.input_size, 1024),
-            #nn.ReLU(),
+            
             nn.Dropout(0.2),
             nn.Linear(1024, 128),
-            #nn.ReLU(),
+            
             nn.Dropout(0.2),
             nn.Linear(128, 64),
-            #nn.ReLU(),
+            
             nn.Dropout(0.1),
-
             nn.Linear(64, 16),
-            #nn.ReLU(),
 
             nn.Linear(16, 1)
         )
@@ -89,9 +79,9 @@ def normalized(a, axis=-1, order=2):
     return a / np.expand_dims(l2, axis)
 
 
-model = MLP(768)  # CLIP embedding dim is 768 for CLIP ViT L 14
+model = MLP(512)  # CLIP embedding dim is 768 for CLIP ViT L 14
 
-s = torch.load("sac+logos+ava1-l14-linearMSE.pth")   # load the model you trained previously or the model available in this repo
+s = torch.load("apv1.pth")   # load the model you trained previously or the model available in this repo
 
 model.load_state_dict(s)
 
@@ -100,7 +90,7 @@ model.eval()
 
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-model2, preprocess = clip.load("ViT-L/14", device=device)  #RN50x64   
+model2, preprocess = clip.load("ViT-B/32", device=device)  #RN50x64   
 
 
 pil_image = Image.open(img_path)
